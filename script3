@@ -2,26 +2,43 @@
 
 # assign variables
 ACTION=${1}
+VERSION=1.0.1
 
 function create_file() {
-touch "${1}-100519"
+touch "${1}"
+}
+
+function delete_file() {
+rm "${1}"
+}
+
+function show_version() {
+echo $VERSION
 }
 
 function display_help() {
 
 cat << EOF
-Usage: ${0} {-h|--help|-c|--create} <filename>
+Usage: ${0} {-h|--help|-v|--version|-c|--create|-d|--delete} <filename>
 
 OPTION:
 	-h | --help	Display the command help
+	-v | --version	Display the version of this script
 	-c | --create	Create a new file
+	-d | --delete	delete a file
 
 Example:
 	Display help:
 		$ ${0} -h
 
+	Display Version:
+		$ ${0} -v
+
 	Create a new file:
 		$ ${0} -c new_file.txt
+
+	Delete a file:
+		$ ${0} -d <filename>
 
 EOF
 }
@@ -30,10 +47,16 @@ case "$ACTION" in
 	-h|--help)
 		display_help
 		;;
+	-v|--version)
+		show_version
+		;;
 	-c|--create)
 		create_file "${2:-new_file}"
 		;;
+	-d|--delete)
+		delete_file "${2:-new_file}"
+		;;
 	*)
-		echo "Usage ${0} {-h|-c}"
+		echo "Usage ${0} {-h|-v|-c|-d}"
 		exit 1
 esac
